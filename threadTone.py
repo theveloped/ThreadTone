@@ -3,17 +3,67 @@ import cv2
 import numpy as np
 
 # Parameters
-imgPath = "./path"  
 imgRadius = 500     # Number of pixels that the image radius is resized to
 
 initPin = 0         # Initial pin to start threading from 
-nPins = 200         # Number of pins on the circular loom
-nLines = 500        # Maximal number of lines
+numPins = 200       # Number of pins on the circular loom
+numLines = 1000     # Maximal number of lines
 
 minLoop = 3         # Disallow loops of less than minLoop lines
 lineWidth = 3       # The number of pixels that represents the width of a thread
 lineWeight = 15     # The weight a single thread has in terms of "darkness"
 
+helpMessage = """
+To use this tool, run:
+
+python threadTone.py -p image-path -l number-of-lines-to-draw -n number-of-pins-to-draw-with
+
+ex: python threadTone.py -p kitten.jpg -l 2000 -n 250
+or
+ex: python threadTone.py -p puppr.png
+
+Note: imgPath is a required field, and to give a value to numPins
+"""
+args = sys.argv
+
+# \/argument interpreter
+for arg in args:
+    if arg == "-h" or arg == "-?" or arg == "help":
+        print(helpMessage)
+        sys.exit()
+
+argNum = 1
+while argNum < len(args):
+    if args[argNum][0] == "-":
+        flag = args[argNum]
+        if flag == "-p" or flag == "-P":
+            argument = args[argNum + 1]
+            imgPath = args[argNum + 1]
+            argNum += 2
+        elif flag == "-l" or flag == "-L":
+            try:
+                int(args[argNum + 1])
+            except ValueError:
+                print("'" + args[argNum + 1] + "' is not an integer, please input an integer for the number of lines to draw.")
+                sys.exit(1)
+            numLines = int(args[argNum + 1])
+            argNum += 2
+        elif flag == "-n" or flag == "-N":
+            try:
+                int(args[argNum + 1])
+            except ValueError:
+                print("'" + args[argNum + 1] + "' is not an integer, please input an integer for the number of pins.")
+                sys.exit(1)
+            numPins = int(args[argNum + 1])
+            argNum += 2
+        else:
+            print("Invalid flag: " + args[argNum])
+            sys.exit(1)
+    else:
+        print("Invalid flag: " + args[argNum])
+        sys.exit(1)
+        
+# \/main processes
 banner = """
    __  __                        ________               
   / /_/ /_  ________  ____ _____/ /_  __/___  ____  ___ 
@@ -22,6 +72,7 @@ banner = """
 \__/_/ /_/_/   \___/\__,_/\__,_/ /_/  \____/_/ /_/\___/ 
 
 Build a thread based halftone representation of an image
+(Press: ctrl+c in this terminal window to kill the drawing)
 """
 
 # Invert grayscale image
@@ -37,8 +88,8 @@ def maskImage(image, radius):
     return image
 
 # Compute coordinates of loom pins
-def pinCoords(radius, nPins=200, offset=0, x0=None, y0=None):
-    alpha = np.linspace(0 + offset, 2*np.pi + offset, nPins + 1)
+def pinCoords(radius, numPins=200, offset=0, x0=None, y0=None):
+    alpha = np.linspace(0 + offset, 2*np.pi + offset, numPins + 1)
 
     if (x0 == None) or (y0 == None):
         x0 = radius + 1
@@ -96,7 +147,7 @@ if __name__=="__main__":
     print("[+] image preprocessed for threading..")
 
     # Define pin coordinates
-    coords = pinCoords(imgRadius, nPins)
+    coords = pinCoords(imgRadius, numPins)
     height, width = imgMasked.shape[0:2]
 
     # image result is rendered to
@@ -112,14 +163,14 @@ if __name__=="__main__":
     imgResult = 255 * np.ones((height, width))
 
     # Loop over lines until stopping criteria is reached
-    for line in range(nLines):
+    for line in range(numLines):
         i += 1
         bestLine = 0
         oldCoord = coords[oldPin]
 
         # Loop over possible lines
-        for index in range(1, nPins):
-            pin = (oldPin + index) % nPins
+        for index in range(1, numPins):
+            pin = (oldPin + index) % numPins
 
             coord = coords[pin]
 
@@ -161,7 +212,7 @@ if __name__=="__main__":
         # Print progress
         sys.stdout.write("\b\b")
         sys.stdout.write("\r")
-        sys.stdout.write("[+] Computing line " + str(line + 1) + " of " + str(nLines) + " total")
+        sys.stdout.write("[+] Computing line " + str(line + 1) + " of " + str(numLines) + " total")
         sys.stdout.flush()
 
     print("\n[+] Image threaded")
@@ -195,3 +246,5 @@ if __name__=="__main__":
     for l in lines:
         csv_output.write(csver(coords[l[0]],coords[l[1]]))
     csv_output.close()
+
+sys.exit()
