@@ -7,7 +7,7 @@ The process of generating an image with thread is an idea of [Petros Vrellis](ht
   * In my case parsing the result to G-Code for automated fabrication
 
 ## To use this tool, run:
-$ python threadTone.py -p [image-path] -l [number-of-lines-to-draw] -n [number-of-pins-to-draw-with]
+python threadTone.py -p [image-path] -l [number-of-lines-to-draw] -n [number-of-pins-to-draw-with]
 
 ex: python threadTone.py -p kitten.jpg -l 2000 -n 250  
 ex: python threadTone.py -p puppr.png

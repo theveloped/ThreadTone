@@ -15,14 +15,12 @@ lineWeight = 15     # The weight a single thread has in terms of "darkness"
 
 helpMessage = """
 To use this tool, run:
-
 python threadTone.py -p image-path -l number-of-lines-to-draw -n number-of-pins-to-draw-with
 
 ex: python threadTone.py -p kitten.jpg -l 2000 -n 250
-or
 ex: python threadTone.py -p puppr.png
 
-Note: imgPath is a required field, and to give a value to numPins
+Note: imgPath is a required field.
 """
 args = sys.argv
 
