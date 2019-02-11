@@ -6,7 +6,14 @@ The process of generating an image with thread is an idea of [Petros Vrellis](ht
   * Algorithm to place threads
   * In my case parsing the result to G-Code for automated fabrication
 
-A set of two example images can be found below. Please refer to my [blog](http://www.thevelop.nl/blog/2016-12-25/ThreadTone/) for more details.
+## To use this tool, run:
+python threadTone.py -p [image-path] -l [number-of-lines-to-draw] -n [number-of-pins-to-draw-with]
+
+ex: python threadTone.py -p kitten.jpg -l 2000 -n 250  
+ex: python threadTone.py -p puppr.png
+###### Note: imgPath is a required field, and to give a value to numPins
+
+## A set of two example images can be found below. Please refer to my [blog](http://www.thevelop.nl/blog/2016-12-25/ThreadTone/) for more details.
 
 ![Threaded portrait of Poetin](/assets/poetinThreaded.png "Threaded portrait of Poetin")
 
