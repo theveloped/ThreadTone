@@ -225,7 +225,7 @@ if __name__=="__main__":
     <svg width="%i" height="%i" version="1.1" xmlns="http://www.w3.org/2000/svg">
     """ % (width, height)
     footer="</svg>"
-    svg_output.write(header)
+    svg_output.write(header.encode('utf8'))
     pather = lambda d : '<path d="%s" stroke="black" stroke-width="0.5" fill="none" />\n' % d
     pathstrings=[]
     pathstrings.append("M" + "%i %i" % coords[lines[0][0]] + " ")
@@ -234,15 +234,15 @@ if __name__=="__main__":
         pathstrings.append("L" + "%i %i" % nn + " ")
     pathstrings.append("Z")
     d = "".join(pathstrings)
-    svg_output.write(pather(d))
-    svg_output.write(footer)
+    svg_output.write(pather(d).encode('utf8'))
+    svg_output.write(footer.encode('utf8'))
     svg_output.close()
 
     csv_output = open('threaded.csv','wb')
-    csv_output.write("x1,y1,x2,y2\n")
+    csv_output.write("x1,y1,x2,y2\n".encode('utf8'))
     csver = lambda c1,c2 : "%i,%i" % c1 + "," + "%i,%i" % c2 + "\n"
     for l in lines:
-        csv_output.write(csver(coords[l[0]],coords[l[1]]))
+        csv_output.write(csver(coords[l[0]],coords[l[1]]).encode('utf8'))
     csv_output.close()
 
 sys.exit()
