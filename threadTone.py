@@ -110,7 +110,7 @@ def linePixels(pin0, pin1):
     x = np.linspace(pin0[0], pin1[0], length)
     y = np.linspace(pin0[1], pin1[1], length)
 
-    return (x.astype(np.int)-1, y.astype(np.int)-1)
+    return (x.astype(int)-1, y.astype(int)-1)
 
 
 if __name__=="__main__":
